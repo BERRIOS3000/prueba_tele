@@ -1,0 +1,63 @@
+
+create database telefonica2;
+use telefonica2;
+
+
+-- -----------------------------------------------------
+-- Table cliente
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS cliente (
+  id INT NOT NULL AUTO_INCREMENT,
+  nombre_completo VARCHAR(100) NULL,
+  tipo_documento VARCHAR(100) NULL,
+  numero_documento VARCHAR(100) NULL,
+  fecha_nacimiento DATE NULL,
+  PRIMARY KEY (id),
+  UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table linea_movil
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS linea_movil (
+  id INT NOT NULL AUTO_INCREMENT,
+  numero_telefono VARCHAR(100) NULL,
+  estado VARCHAR(50) NULL,
+  tipo VARCHAR(50) NULL,
+  	 VARCHAR(50) NULL,
+  cliente_id INT NOT NULL,
+  PRIMARY KEY (id),
+  INDEX fk_linea_movil_cliente_idx (cliente_id ASC) VISIBLE,
+  CONSTRAINT fk_linea_movil_cliente
+    FOREIGN KEY (cliente_id)
+    REFERENCES cliente (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table oferta
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS oferta (
+  id INT NOT NULL AUTO_INCREMENT,
+  codigo_oferta VARCHAR(100) NULL,
+  descripcion_oferta VARCHAR(100) NOT NULL,
+  fecha_inicio DATE NULL,
+  fecha_fin DATE NULL,
+  linea_movil_id INT NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE,
+  INDEX fk_oferta_linea_movil1_idx (linea_movil_id ASC) VISIBLE,
+  CONSTRAINT fk_oferta_linea_movil1
+    FOREIGN KEY (linea_movil_id)
+    REFERENCES linea_movil (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
